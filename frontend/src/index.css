@@ -1,0 +1,42 @@
+@import 'tailwindcss';
+
+@layer base {
+  h2 {
+    @apply text-white font-bold text-2xl
+  }
+
+  h1 {
+    @apply text-white font-bold text-4xl
+  }
+  h3 {
+    @apply text-white text-lg
+  }
+
+  input[type="text"] {
+    @apply p-3 bg-gray-400 text-lg mt-2
+  }
+
+  label, p {
+    @apply text-white text-lg
+  }
+
+  button {
+    @apply p-2 bg-blue-700 text-lg text-white hover:bg-blue-400
+  }
+
+  input[type="radio"] {
+    @apply m-2
+  }
+}
+
+@layer components {
+  .icon-img {
+    @apply w-6 ml-3
+  }
+  .pending-task {
+    @apply flex justify-center p-2 bg-red-900 rounded-2xl m-2
+  }
+  .completed-task {
+    @apply text-white text-lg font-mono m-2 flex justify-between p-2 bg-blue-900 rounded-2xl
+  }
+}
