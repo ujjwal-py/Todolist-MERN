@@ -13,15 +13,15 @@
   }
 
   input[type="text"] {
-    @apply p-3 bg-gray-400 text-lg mt-2
+    @apply p-3 bg-cyan-900 text-white text-lg mt-2
   }
 
   label, p {
-    @apply text-white text-lg
+    @apply text-white text-lg font-bold
   }
 
   button {
-    @apply p-2 bg-blue-700 text-lg text-white hover:bg-blue-400
+    @apply px-4 py-1 bg-blue-700 text-lg text-white cursor-pointer hover:bg-blue-800 rounded-lg active:scale-95 
   }
 
   input[type="radio"] {
@@ -34,9 +34,9 @@
     @apply w-6 ml-3
   }
   .pending-task {
-    @apply flex justify-center p-2 bg-red-900 rounded-2xl m-2
+    @apply flex justify-center p-2 bg-red-900 rounded-2xl mb-4 w-full
   }
   .completed-task {
-    @apply text-white text-lg font-mono m-2 flex justify-between p-2 bg-blue-900 rounded-2xl
+    @apply text-white text-lg font-mono  flex justify-between p-2 mb-4 bg-blue-900 rounded-2xl w-full
   }
 }
