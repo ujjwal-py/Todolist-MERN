@@ -36,7 +36,8 @@ MONGO_URI= # your monogo db connection url here
 PORT= # port number where you want to run the backend
 ```
 ## Todo
-- [ ] Detailed Task viewing and updating by using react router dom
+- [x] Add a navbar and enable routing
+- [ ] Detailed Task viewing and updating 
 - [ ] Better UI
 
 **I swear this is the last todolist project**
