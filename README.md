@@ -37,7 +37,8 @@ PORT= # port number where you want to run the backend
 ```
 ## Todo
 - [x] Add a navbar and enable routing
-- [ ] Detailed Task viewing and updating 
+- [x] Detailed Task viewing and updating 
 - [ ] Better UI
+- [ ] States are getting too complex, need useReducer
 
 **I swear this is the last todolist project**
