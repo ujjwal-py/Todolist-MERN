@@ -9,7 +9,7 @@
     @apply text-white font-bold text-4xl
   }
   h3 {
-    @apply text-white text-lg
+    @apply text-white text-xl font-bold
   }
 
   input[type="text"] {
@@ -34,10 +34,10 @@
     @apply w-6 ml-3 cursor-pointer
   }
   .pending-task {
-    @apply flex justify-center p-2 bg-red-900 rounded-2xl mb-4 w-full
+    @apply flex flex-col justify-center p-2 bg-blue-900 mb-4 w-full
   }
   .completed-task {
-    @apply text-white text-lg font-mono  flex justify-between p-2 mb-4 bg-blue-900 rounded-2xl w-full
+    @apply text-white text-lg font-bold  flex justify-between p-6 mb-4 bg-green-900 w-full
   }
   .backdrop-style {
     @apply fixed inset-0 bg-black/50 flex items-center justify-center

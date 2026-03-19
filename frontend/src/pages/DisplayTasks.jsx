@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
+import { useformData, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/form';
 import high from '../assets/red-flag.svg';
@@ -12,30 +11,98 @@ import trash from '../assets/delete.svg';
 import edit_img from '../assets/edit.svg';
 
 
-function DisplayTasks({ refresh, setRefresh }) {
-    const [pendingTasks, setPendingTasks] = useState([]);
-    const [completedTasks, setCompletedTasks] = useState([]);
-    const [isOpen, setIsOpen] = useState(false);
-    const [editingTask, setEditingTask] = useState(null);
-    const [formData, setFormData] = useState({
-        title: "",
-        description: "",
-        priority: "",
-        deadline_date: "",
-        deadline_time: ""
-    });
+function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
+    function reducer(state, action) {  // will handle all the display functions 
+        switch (action.type) {
+            case "FETCH PENDING":
+                return {
+                    ...state,
+                    pendingTasks: action.payload,
+                };
+            case "FETCH COMPLETED":
+                return {
+                    ...state,
+                    completedTasks: action.payload,
+                };
+
+            case "FETCH SUCCESS":
+                return {
+                    ...state,
+                    isOpen: false,
+                }
+            case "FETCH P-FAILED":
+                return {
+                    ...state,
+                    pendingTasks: []
+                }
+            case "FETCH C-FAILED":
+                return {
+                    ...state,
+                    completedTasks: []
+                }
+            case 'OPEN':
+                return {
+                    ...state,
+                    isOpen: true
+                };
+
+            case 'CLOSE':
+                return {
+                    ...state,
+                    isOpen: false
+                };
+            case "FETCH SINGLE":
+                return {
+                    ...state,
+                    editingTask: action.payload._id,
+                    isOpen: true
+                };
+
+        }
+    }
+
+    const initialformData = {
+        editingTask: null,
+        pendingTasks: [],
+        completedTasks: [],
+        isOpen: false,
+        refresh: false
+    }
+
+    const [state, dispatch] = useReducer(reducer, initialformData);
+
+    // const [pendingTasks, setPendingTasks] = useformData([]);
+    // const [completedTasks, setCompletedTasks] = useformData([]);
+    // const [isOpen, setIsOpen] = useformData(false);
+    // const [editingTask, setEditingTask] = useformData(null);
+
+    const clearForm = () => {
+        setFormData({
+            title: '',
+            description: "",
+            priority: "",
+            deadline_date: "",
+            deadline_time: "",
+            task_formData: "pending"
+        })
+    }
     const navigation = useNavigate();
 
     const handleEdit = (task) => {
-        setEditingTask(task._id);
-        setFormData({
+        // setEditingTask(task._id);
+        dispatch({
+            type: "FETCH SINGLE",
+            payload: task
+        })
+        setFormData((prev) => ({
+            ...prev,
             title: task.title,
             description: task.description,
             priority: task.priority,
             deadline_date: task.deadline_date,
             deadline_time: task.deadline_time
-        });
-        setIsOpen(true);
+        }));
+
     }
 
     const handleChange = (e) => {
@@ -49,49 +116,48 @@ function DisplayTasks({ refresh, setRefresh }) {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            await Api.put(`/update/${editingTask}`, {
-                title: formData.title,
-                description: formData.description,
-                priority: formData.priority,
-                deadline_date: formData.deadline_date,
-                deadline_time: formData.deadline_time
-            });
-            setIsOpen(false);
-            setEditingTask(null);
-            setRefresh(!refresh);
+            await Api.put(`/update/${state.editingTask}`, formData);
+            dispatch({ type: "FETCH SUCCESS" })
+            setRefresh(!refresh) // notify dom 
+            clearForm(); // clear form from the updated values
         } catch (err) {
             console.error(err);
         }
     };
 
     const fetchPendingTasks = async () => {
-        let arr = [];
-
         try {
             const res = await Api.get("/pending");
-            arr = res.data;
+            dispatch({
+                type: "FETCH PENDING",
+                payload: res.data
+            })
         }
         catch (err) {
             console.error(err);
-            arr = [];
+            dispatch({
+                type: "FETCH P-FAILED",
+            })
         }
-        finally {
-            setPendingTasks(arr);
-        }
+
     }
 
     useEffect(() => { fetchPendingTasks() }, [refresh])
     useEffect(() => {
         const fetchCompletedTask = async () => {
-            let arr = [];
+
             try {
                 const res = await Api.get("/completed");
-                arr = res.data;
-                setCompletedTasks(arr);
-                setRefresh(!refresh);
+                dispatch({
+                    type: "FETCH COMPLETED",
+                    payload: res.data
+                })
             }
             catch (err) {
                 console.error(err);
+                dispatch({
+                    type: "FETCH C-FAILED"
+                })
             }
         }
         fetchCompletedTask();
@@ -105,6 +171,7 @@ function DisplayTasks({ refresh, setRefresh }) {
                 task_state: "completed"
             });
             setRefresh(!refresh)
+
         }
         catch (err) {
             console.error(err);
@@ -115,7 +182,7 @@ function DisplayTasks({ refresh, setRefresh }) {
         const id = _id;
         try {
             const res = await Api.delete(`/delete/${id}`);
-            setRefresh(!refresh);
+            setRefresh(!refresh)
         }
         catch (err) {
             console.error(err);
@@ -126,58 +193,59 @@ function DisplayTasks({ refresh, setRefresh }) {
             {/* tasks display */}
             < div className='flex flex-col w-screen items-center h-[80vh]' >
                 <div className='flex justify-between mt-4 w-full'>
-                    <div className='p-2 w-1/2  m-4'>
-                        <h2 className='text-white text-center text-2xl bg-blue-500 rounded-lg mb-6'>Pending Tasks</h2>
+                    <div className='w-1/2 bg-blue-400 rounded-2xl m-4 shadow-lg shadow-blue-400'>
+                        <h2 className='text-black text-center text-2xl   mb-4'>Pending Tasks</h2>
                         <ul>
-                            {/* <li className='pending-task'>
-                      Do DSA binary trees
-                      <img src={redFlag} className='icon-img' />
-                      <img src={clock} className='icon-img' />
-                      <p>Deadline: 6/3/2025</p>
-                      <img src={check} className='icon-img hover:bg-green-300' />
-                    </li> */}
-                            {pendingTasks.map((t) => (
+
+                            {state.pendingTasks.map((t) => (
                                 <li key={t._id} className='pending-task'>
-                                    <div className='w-[50%]'>
+                                    <div className='flex gap-4'>
                                         <h3 title={t.description}>{t.title}</h3>
-                                    </div>
-                                    <div className='w-10'>
                                         <img src={t.priority === "high" ? high : t.priority === "medium" ? medium : low} className='icon-img' />
+
                                     </div>
-                                    <div className='w-[40%]  flex'>
-                                        <img src={clock} className='icon-img' />
-                                        <p>Deadline: {t.deadline_date} {t.deadline_time}</p>
+
+                                    <div className='flex gap-4'>
+                                        <div className='flex'>
+                                            <img src={clock} className='icon-img' />
+                                            <p className='font-normal'>Deadline: {t.deadline_date} {t.deadline_time}</p>
+                                        </div>
+                                        <img src={check} className='icon-img '
+                                            onClick={() => {
+                                                markDone(t._id);
+                                            }} />
+                                        <img src={edit_img}
+                                            className='icon-img'
+                                            onClick={() => {
+                                                handleEdit(t);
+                                            }}
+                                        />
                                     </div>
-                                    <img src={check} className='icon-img '
-                                        onClick={() => {
-                                            markDone(t._id);
-                                        }} />
-                                    <img src={edit_img}
-                                        className='icon-img'
-                                        onClick={() => {
-                                            handleEdit(t);
-                                        }}
-                                    />
+
                                 </li>
                             ))}
                         </ul>
-                        {isOpen && (
+                        {state.isOpen && (
                             <div className='backdrop-style'>
                                 <div className='bg-gray-800 p-5 rounded-2xl relative'>
                                     <button className='bg-red-500  absolute right-0 top-0' onClick={() => {
-                                        setIsOpen(false);
+                                        // setIsOpen(false);
+                                        dispatch({ type: "CLOSE" })
+                                        clearForm()
                                     }}>Close</button>
-                                    <Form task={formData} handleChange={handleChange} handleSubmit={handleFormSubmit} />
-                                    
+                                    <Form formData={formData}
+                                        handleChange={handleChange}
+                                        handleSubmit={handleFormSubmit} />
+
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    <div className='w-1/2 m-4 p-2'>
-                        <h2 className='text-white text-center text-2xl rounded-lg bg-blue-500 mb-6'>Completed Tasks</h2>
+                    <div className='w-1/2 bg-blue-400 rounded-2xl m-4 shadow-lg shadow-blue-500'>
+                        <h2 className='text-black text-center text-2xl  mb-4'>Completed Tasks</h2>
                         <ul>
-                            {completedTasks.map((t) => (
+                            {state.completedTasks.map((t) => (
                                 <li key={t._id} className='completed-task'>{t.title}
                                     <img src={trash} className='icon-img hover:bg-blue-400'
                                         onClick={() => {
@@ -190,7 +258,7 @@ function DisplayTasks({ refresh, setRefresh }) {
                     </div>
                 </div>
 
-                <button className='bg-red-400'
+                <button className='bg-red-400 mt-10'
                     onClick={() => {
                         navigation('/newtask')
                     }}
