@@ -42,7 +42,7 @@ function NewformData({formData, setFormData ,refresh, setRefresh}) {
         <>
             {/* New formData */}
             <div className='flex flex-col h-[80vh] gap-y-10 justify-center items-center m-0'>
-                <h2 className='text-center mb-8 text-white text-6xl'>Create New formData</h2>
+                <h2 className='text-center mb-8 text-white text-6xl'>Create New Task</h2>
                 <Form isReq = {true} formData = {formData} handleChange = {handleChange} handleSubmit = {handleSubmit} />
 
                 <button className='mt-8 active:scale-95 bg-red-400'

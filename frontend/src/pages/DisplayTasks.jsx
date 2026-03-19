@@ -1,14 +1,9 @@
-import { useformData, useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/form';
-import high from '../assets/red-flag.svg';
-import medium from '../assets/yellow-flag.svg'
-import low from '../assets/green-flag.svg'
-import clock from '../assets/clock-white.svg';
-import check from '../assets/check.svg'
 import Api from '../services/Api';
 import trash from '../assets/delete.svg';
-import edit_img from '../assets/edit.svg';
+import PendingTask from '../components/PendingTask';
 
 
 function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
@@ -71,10 +66,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
     const [state, dispatch] = useReducer(reducer, initialformData);
 
-    // const [pendingTasks, setPendingTasks] = useformData([]);
-    // const [completedTasks, setCompletedTasks] = useformData([]);
-    // const [isOpen, setIsOpen] = useformData(false);
-    // const [editingTask, setEditingTask] = useformData(null);
+
 
     const clearForm = () => {
         setFormData({
@@ -89,7 +81,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
     const navigation = useNavigate();
 
     const handleEdit = (task) => {
-        // setEditingTask(task._id);
+
         dispatch({
             type: "FETCH SINGLE",
             payload: task
@@ -193,34 +185,13 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
             {/* tasks display */}
             < div className='flex flex-col w-screen items-center h-[80vh]' >
                 <div className='flex justify-between mt-4 w-full'>
-                    <div className='w-1/2 bg-blue-400 rounded-2xl m-4 shadow-lg shadow-blue-400'>
-                        <h2 className='text-black text-center text-2xl   mb-4'>Pending Tasks</h2>
+                    <div className='w-1/2 rounded-2xl m-4'>
+                        <h2 className='text-white text-center text-2xl   mb-4'>Pending Tasks</h2>
                         <ul>
 
                             {state.pendingTasks.map((t) => (
                                 <li key={t._id} className='pending-task'>
-                                    <div className='flex gap-4'>
-                                        <h3 title={t.description}>{t.title}</h3>
-                                        <img src={t.priority === "high" ? high : t.priority === "medium" ? medium : low} className='icon-img' />
-
-                                    </div>
-
-                                    <div className='flex gap-4'>
-                                        <div className='flex'>
-                                            <img src={clock} className='icon-img' />
-                                            <p className='font-normal'>Deadline: {t.deadline_date} {t.deadline_time}</p>
-                                        </div>
-                                        <img src={check} className='icon-img '
-                                            onClick={() => {
-                                                markDone(t._id);
-                                            }} />
-                                        <img src={edit_img}
-                                            className='icon-img'
-                                            onClick={() => {
-                                                handleEdit(t);
-                                            }}
-                                        />
-                                    </div>
+                                    <PendingTask t = {t} />
 
                                 </li>
                             ))}
@@ -242,8 +213,8 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
                         )}
                     </div>
 
-                    <div className='w-1/2 bg-blue-400 rounded-2xl m-4 shadow-lg shadow-blue-500'>
-                        <h2 className='text-black text-center text-2xl  mb-4'>Completed Tasks</h2>
+                    <div className='w-1/2  rounded-2xl m-4'>
+                        <h2 className='text-white text-center text-2xl  mb-4'>Completed Tasks</h2>
                         <ul>
                             {state.completedTasks.map((t) => (
                                 <li key={t._id} className='completed-task'>{t.title}

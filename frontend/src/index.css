@@ -34,10 +34,10 @@
     @apply w-6 ml-3 cursor-pointer
   }
   .pending-task {
-    @apply flex flex-col justify-center p-2 bg-blue-900 mb-4 w-full
+    @apply flex flex-col justify-center rounded-2xl shadow-lg shadow-blue-500 p-2 bg-blue-900 mb-5 w-full
   }
   .completed-task {
-    @apply text-white text-lg font-bold  flex justify-between p-6 mb-4 bg-green-900 w-full
+    @apply text-white text-lg font-bold rounded-2xl shadow-lg shadow-green-400 flex justify-between p-6 mb-5 bg-green-900 w-full
   }
   .backdrop-style {
     @apply fixed inset-0 bg-black/50 flex items-center justify-center

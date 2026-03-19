@@ -9,7 +9,7 @@ function Form({formData, handleChange, handleSubmit, isReq}) {
                     <input type="text" name="title" className="w-96 mb-4" value={formData.title} required = {isReq}
                         onChange={handleChange} />
                     <label className="block">Description:</label>
-                    <textarea name="description" type="text" className=" bg-cyan-900 text-white p-2 w-96 h-24" value={formData.description}
+                    <textarea name="description" type="text" className=" bg-cyan-900 text-white p-2 w-96 h-24 resize-none" value={formData.description}
                         onChange={handleChange} />
                 </div>
                 <div className=''>
