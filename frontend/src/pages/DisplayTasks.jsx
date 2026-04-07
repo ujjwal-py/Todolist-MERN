@@ -191,7 +191,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
                             {state.pendingTasks.map((t) => (
                                 <li key={t._id} className='pending-task'>
-                                    <PendingTask t = {t} />
+                                    <PendingTask t = {t} handleEdit={handleEdit} />
 
                                 </li>
                             ))}
@@ -218,7 +218,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
                         <ul>
                             {state.completedTasks.map((t) => (
                                 <li key={t._id} className='completed-task'>{t.title}
-                                    <img src={trash} className='icon-img hover:bg-blue-400'
+                                    <img src={trash} className='icon-img'
                                         onClick={() => {
                                             deleteTask(t._id)
                                         }}

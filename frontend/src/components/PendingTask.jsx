@@ -6,7 +6,7 @@ import check from '../assets/check.svg'
 import edit_img from '../assets/edit.svg';
 
 
-function PendingTask({t}) {
+function PendingTask({t, handleEdit}) {
     return (
         <div>
             <div className='flex gap-4'>

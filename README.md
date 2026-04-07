@@ -38,7 +38,8 @@ PORT= # port number where you want to run the backend
 ## Todo
 - [x] Add a navbar and enable routing
 - [x] Detailed Task viewing and updating 
-- [ ] Better UI
-- [ ] States are getting too complex, need useReducer
-
+- [x] Better UI
+- [x] States are getting too complex, need useReducer
+- [x] Added Auth logic in the backend
+- [ ] Connect auth with frontend as well
 **I swear this is the last todolist project**
