@@ -1,8 +1,10 @@
 import React from 'react'
+import Navbar from '../components/Navbar';
 
 function Stats() {
     return (
         <div>
+            <Navbar/>
             < div className='m-4' >
                 <h2>Tasks Completed Today</h2>
                 <h2>Tasks completed this week</h2>

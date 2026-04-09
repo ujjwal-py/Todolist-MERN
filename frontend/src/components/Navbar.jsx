@@ -6,7 +6,9 @@ function Navbar() {
   return (
     <div className='flex justify-between p-2 bg-cyan-700 text-2xl text-white'>
         <div className='ml-4'>
-            <h2>TodoList App</h2>
+            <Link to='/'> 
+              <h2>TodoList App</h2>
+            </Link>
         </div>
         <nav className='flex justify-evenly gap-8 mr-4'>
             <Link to='/display' >Tasks</Link>

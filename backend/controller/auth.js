@@ -5,6 +5,13 @@ import bcrypt from 'bcrypt';
 // user already exists? 
 // match jwt token
 
+export const signInMiddleware = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        return res.status(400).json({msg: "Already signed in"})
+    }
+    next();
+}
 
 export const authMiddlware = (req, res, next) => {
     const authHeader = req.headers.authorization;

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Api from '../services/Api';
 import SignForm from '../components/SignForm';
+import Navbar from '../components/Navbar';
 
 
 function Signin() {
@@ -41,6 +42,8 @@ function Signin() {
   }
   return (
     <>
+    <Navbar />
+
     <SignForm handleChange={handleChange} formData={formData} handleSubmit={handleSubmit} formTitle={"Sign In"} error = {error}/>
     </>
   )

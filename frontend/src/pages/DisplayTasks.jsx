@@ -4,6 +4,7 @@ import Form from '../components/form';
 import Api from '../services/Api';
 import trash from '../assets/delete.svg';
 import PendingTask from '../components/PendingTask';
+import Navbar from '../components/Navbar';
 
 
 function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
@@ -216,6 +217,8 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
     }
     return (
         <>
+            <Navbar />
+
             {/* tasks display */}
             < div className='flex flex-col w-screen items-center h-[80vh]' >
                 <div className='flex justify-between mt-4 w-full'>
@@ -225,7 +228,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
                             {state.pendingTasks.map((t) => (
                                 <li key={t._id} className='pending-task'>
-                                    <PendingTask t = {t} handleEdit={handleEdit} />
+                                    <PendingTask t = {t} handleEdit={handleEdit} deleteTask={deleteTask} />
 
                                 </li>
                             ))}

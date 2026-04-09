@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Api from '../services/Api';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/form';
+import Navbar from '../components/Navbar';
 
 function NewformData({formData, setFormData ,refresh, setRefresh}) {
 
@@ -39,13 +40,15 @@ function NewformData({formData, setFormData ,refresh, setRefresh}) {
             setRefresh(!refresh); //toggle for useeffect
         }
         catch (err) {
-            alert("Something went wrong");
+            // alert("Something went wrong");
             console.error(err);
             navigation('/login')
         }
     }
     return (
         <>
+        <Navbar/>
+
             {/* New formData */}
             <div className='flex flex-col h-[80vh] gap-y-10 justify-center items-center m-0'>
                 <h2 className='text-center mb-8 text-white text-6xl'>Create New Task</h2>
@@ -53,7 +56,7 @@ function NewformData({formData, setFormData ,refresh, setRefresh}) {
 
                 <button className='mt-8 active:scale-95 bg-red-400'
                     onClick={() => {
-                        navigation('/')
+                        navigation('/display')
                     }}
                 >Show Tasks</button> 
 

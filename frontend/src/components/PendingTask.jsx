@@ -4,9 +4,10 @@ import low from '../assets/green-flag.svg'
 import clock from '../assets/clock-white.svg';
 import check from '../assets/check.svg'
 import edit_img from '../assets/edit.svg';
+import trash from '../assets/delete.svg'
 
 
-function PendingTask({t, handleEdit}) {
+function PendingTask({ t, handleEdit, deleteTask }) {
     return (
         <div>
             <div className='flex gap-4'>
@@ -28,6 +29,11 @@ function PendingTask({t, handleEdit}) {
                     className='icon-img'
                     onClick={() => {
                         handleEdit(t);
+                    }}
+                />
+                <img src={trash} className='icon-img'
+                    onClick={() => {
+                        deleteTask(t._id)
                     }}
                 />
             </div>

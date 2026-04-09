@@ -1,12 +1,12 @@
 import {createTask, displayPending, displayCompleted, deleteTask, updateTask} from '../controller/taskController.js'
 import express from 'express'
-import { signUpController, authMiddlware, signIn } from "../controller/auth.js"
+import { signUpController, authMiddlware, signIn, signInMiddleware } from "../controller/auth.js"
 
 const router = express.Router();
 
 
 router.post('/register', signUpController);
-router.post('/login', signIn)
+router.post('/login', signInMiddleware, signIn)
 
 
 router.get('/', authMiddlware ,(req, res) => {
