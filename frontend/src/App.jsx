@@ -8,6 +8,8 @@ import Stats from './pages/Stats';
 import Navbar from './components/Navbar';
 import Signin from './pages/Signin';
 import SignUp from './pages/SignUp';
+import Logout from './pages/Logout';
+import FourOFour from './pages/FourOFour';
 
 function App() {
   const [refresh, setRefresh] = useState(false)
@@ -27,6 +29,7 @@ function App() {
         <Route path='/' element = {<Landing/>} />
         <Route path='/login' element = {<Signin/>} />
         <Route path='/register' element = {<SignUp/>} />
+        <Route path='/logout' element={<Logout/>} />
         <Route path='/display' element = {<DisplayTasks
          refresh={refresh}
          setRefresh={setRefresh}
@@ -39,6 +42,7 @@ function App() {
          setFormData = {setFormData}
          />} />
         <Route path='/stats' element={<Stats/>}/>
+        <Route path='*' element = {<FourOFour/>} />
       </Routes>
     </>
   )

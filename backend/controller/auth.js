@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt';
 export const authMiddlware = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-        return res.status(405).json({
+        return res.status(401).json({
             msg: "No token provided"
         })
     }
@@ -19,7 +19,7 @@ export const authMiddlware = (req, res, next) => {
         next();
     }
     catch (err) {
-        return res.status(402).json({
+        return res.status(401).json({
             msg: "User not authenticated"
         })
     }
@@ -57,7 +57,7 @@ export const signUpController = async(req, res) => {
     try {
         const isExist = await User.findOne({username: username})
         if (isExist) {
-            return res.status(402).json({
+            return res.status(409).json({
                 msg: "User already exists"
             });
         }

@@ -13,6 +13,8 @@ function Signin() {
     password : ""
   })
 
+  const [error, setError] = useState("");
+
   const handleChange = (e) => {
     const {name, value}  = e.target;
     setFormData((prev) => ({
@@ -28,16 +30,18 @@ function Signin() {
       const token =  response.data.token;
       localStorage.setItem("my-todo-token", token);
       navigaton('/display')
+      setError("");
 
     }
     catch(err) {
       console.error(err);
+      setError(`ERROR ${err.status} -> ${err.response.data.msg}`)
     } 
 
   }
   return (
     <>
-    <SignForm handleChange={handleChange} formData={formData} handleSubmit={handleSubmit} formTitle={"Sign In"}/>
+    <SignForm handleChange={handleChange} formData={formData} handleSubmit={handleSubmit} formTitle={"Sign In"} error = {error}/>
     </>
   )
 }

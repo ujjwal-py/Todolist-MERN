@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import logout from '../assets/logout.svg'
 
 function Navbar() {
   return (
@@ -11,6 +12,7 @@ function Navbar() {
             <Link to='/display' >Tasks</Link>
             <Link to='/newtask' >New Task</Link>
             <Link to='/stats' >Stats</Link>
+            <Link to ='/logout'><img src={logout} className='w-10 h-10'/></Link>
         </nav>
     </div>
   )

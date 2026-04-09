@@ -1,12 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function SignForm({ handleSubmit, formData, handleChange, formTitle }) {
+function SignForm({ handleSubmit, formData, handleChange, formTitle, error }) {
     return (
         <div>
             <div className='flex justify-center items-center min-h-screen'>
                 <div className='bg-cyan-700 rounded-2xl shadow-xl shadow-blue-500 p-10 w-96'>
                     <h1 className='text-center mb-8'>{formTitle}</h1>
+                        <div className='text-red-500 font-bold bg-white text-lg text-center'>{error}</div>
                     <form className='flex flex-col gap-6' onSubmit={handleSubmit}>
                         <div className='flex flex-col'>
                             <label className='mb-2'>Username</label>

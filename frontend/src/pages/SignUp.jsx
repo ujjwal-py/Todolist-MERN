@@ -5,13 +5,15 @@ import Api from '../services/Api';
 import SignForm from '../components/SignForm';
 
 
-function Signin() {
+function SignUp() {
   const navigaton = useNavigate();
 
   const [formData, setFormData] = useState({
     username : "",
     password : ""
   })
+
+  const [error, setError] = useState(``);
 
   const handleChange = (e) => {
     const {name, value}  = e.target;
@@ -32,14 +34,15 @@ function Signin() {
     }
     catch(err) {
       console.error(err);
+      setError(`ERROR ${err.status} -> ${err.response.data.msg}`)
     } 
 
   }
   return (
     <>
-    <SignForm handleChange={handleChange} formData={formData} handleSubmit={handleSubmit} formTitle={"Sign Up"}/>
+    <SignForm handleChange={handleChange} formData={formData} handleSubmit={handleSubmit} formTitle={"Sign Up"} error = {error} />
     </>
   )
 }
 
-export default Signin
+export default SignUp

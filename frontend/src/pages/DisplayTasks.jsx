@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/form';
 import Api from '../services/Api';
@@ -7,6 +7,7 @@ import PendingTask from '../components/PendingTask';
 
 
 function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
+    const [loading, setLoading] = useState();
     function reducer(state, action) {  // will handle all the display functions 
         switch (action.type) {
             case "FETCH PENDING":
@@ -66,8 +67,6 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
     const [state, dispatch] = useReducer(reducer, initialformData);
 
-
-
     const clearForm = () => {
         setFormData({
             title: '',
@@ -105,6 +104,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
         }));
     };
 
+    //update a task from the pending tasks
     const handleFormSubmit = async (e) => {
         const token = localStorage.getItem('my-todo-token')
         // console.log(token);
@@ -125,10 +125,8 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
     const fetchPendingTasks = async () => {
         const token = localStorage.getItem('my-todo-token')
-        console.log(token);
-
-
         try {
+            setLoading(true);
             const res = await Api.get("/pending", {
                 headers : {
                     Authorization: `Bearer ${token}`
@@ -138,12 +136,14 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
                 type: "FETCH PENDING",
                 payload: res.data
             })
+            setLoading(false);
         }
         catch (err) {
             console.error(err);
             dispatch({
                 type: "FETCH P-FAILED",
             })
+            setLoading(false)
             navigation('/login')
         }
 
@@ -156,6 +156,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
 
             try {
+                setLoading(true)
                 const res = await Api.get("/completed", {
                 headers : {
                     Authorization: `Bearer ${token}`
@@ -171,6 +172,9 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
                 dispatch({
                     type: "FETCH C-FAILED"
                 })
+            }
+            finally {
+                setLoading(false)
             }
         }
         fetchCompletedTask();
@@ -217,7 +221,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
                 <div className='flex justify-between mt-4 w-full'>
                     <div className='w-1/2 rounded-2xl m-4'>
                         <h2 className='text-white text-center text-2xl   mb-4'>Pending Tasks</h2>
-                        <ul>
+                        {!loading ? <ul>
 
                             {state.pendingTasks.map((t) => (
                                 <li key={t._id} className='pending-task'>
@@ -225,7 +229,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
                                 </li>
                             ))}
-                        </ul>
+                        </ul> : <div className='text-white text-center font-mono text-2xl'>Fetching data please wait.....</div>}
                         {state.isOpen && (
                             <div className='backdrop-style'>
                                 <div className='bg-gray-800 p-5 rounded-2xl relative'>
@@ -245,6 +249,8 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
                     <div className='w-1/2  rounded-2xl m-4'>
                         <h2 className='text-white text-center text-2xl  mb-4'>Completed Tasks</h2>
+                        {
+                        !loading ? 
                         <ul>
                             {state.completedTasks.map((t) => (
                                 <li key={t._id} className='completed-task'>{t.title}
@@ -255,7 +261,10 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
                                     />
                                 </li>
                             ))}
-                        </ul>
+                        </ul> 
+                        : 
+                        <div className='text-white text-center font-mono text-2xl'>Fetching Data plase wait.....</div>
+                        }
                     </div>
                 </div>
 
