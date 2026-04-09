@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
+import Landing from './pages/Landing';
 import NewTask from './pages/NewTask'
 import DisplayTasks from './pages/DisplayTasks';
 import Stats from './pages/Stats';
 import Navbar from './components/Navbar';
+import Signin from './pages/Signin';
+import SignUp from './pages/SignUp';
 
 function App() {
   const [refresh, setRefresh] = useState(false)
@@ -21,7 +24,10 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path='/' element = {<DisplayTasks
+        <Route path='/' element = {<Landing/>} />
+        <Route path='/login' element = {<Signin/>} />
+        <Route path='/register' element = {<SignUp/>} />
+        <Route path='/display' element = {<DisplayTasks
          refresh={refresh}
          setRefresh={setRefresh}
          formData = {formData}

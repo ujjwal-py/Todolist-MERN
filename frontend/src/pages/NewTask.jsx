@@ -19,8 +19,13 @@ function NewformData({formData, setFormData ,refresh, setRefresh}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('my-todo-token');
         try {
-            const res = await Api.post('/create', formData)
+            const res = await Api.post('/create', formData, {
+                headers : {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             console.log(res.data.id);
             setFormData((prev) => ({
                 ...prev,
@@ -36,6 +41,7 @@ function NewformData({formData, setFormData ,refresh, setRefresh}) {
         catch (err) {
             alert("Something went wrong");
             console.error(err);
+            navigation('/login')
         }
     }
     return (

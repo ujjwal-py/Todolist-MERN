@@ -8,7 +8,7 @@ function Navbar() {
             <h2>TodoList App</h2>
         </div>
         <nav className='flex justify-evenly gap-8 mr-4'>
-            <Link to='/' >Tasks</Link>
+            <Link to='/display' >Tasks</Link>
             <Link to='/newtask' >New Task</Link>
             <Link to='/stats' >Stats</Link>
         </nav>

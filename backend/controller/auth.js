@@ -1,18 +1,20 @@
 import User from '../model/User.js';
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
 
 // user already exists? 
 // match jwt token
 
 
 export const authMiddlware = (req, res, next) => {
-    const token = req.headers.authorization;
-    if (!token) {
-        return res.status(401).json({
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(405).json({
             msg: "No token provided"
         })
     }
     try {
+        const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
         const response = jwt.verify(token, process.env.JWT_SECRET);
         next();
     }
@@ -23,8 +25,34 @@ export const authMiddlware = (req, res, next) => {
     }
 }
 
+export const signIn = async(req, res) =>  {
+    const {username, password} = req.body;
+    try {
+        const user = await User.findOne({username: username}).select("+password");
+        if (!user) {
+            return res.status(401).json({
+                msg : "User not found"
+            });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({msg: "Invalid password"})
+        }
+        const token = jwt.sign({username: user.username}, process.env.JWT_SECRET);
+        res.status(200).json({
+            token
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            msg: err.message
+        })
+    }
+}
+
 export const signUpController = async(req, res) => {
-    const username = req.headers.username;
+    const username = req.body.username;
     
     try {
         const isExist = await User.findOne({username: username})
@@ -33,10 +61,11 @@ export const signUpController = async(req, res) => {
                 msg: "User already exists"
             });
         }
-        const password = req.headers.password;
+        const password = req.body.password;
+        const hashedPass = await bcrypt.hash(password, 10);
         const newUser = await User.create({
             username,
-            password
+            password: hashedPass
         })
         const token = jwt.sign({username: newUser.username}, process.env.JWT_SECRET);
         res.status(200).json({
@@ -49,22 +78,6 @@ export const signUpController = async(req, res) => {
             msg : `${err.message}`
         })
     }
-    
 
 }
 
-const createUser = async (req, res) => {
-    try {
-       const username = req.headers.username;
-       const password = req.headers.password;
-        const newUser = await User.create({
-            username,  
-            password
-        })
-        res.status(201).json({id: `${newUser._id}`})
-    }
-    catch (err) {
-        console.error(err);
-        res.status(401).json({message: `${err.message}`})
-    }
-}

@@ -106,9 +106,15 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
     };
 
     const handleFormSubmit = async (e) => {
+        const token = localStorage.getItem('my-todo-token')
+        // console.log(token);
         e.preventDefault();
         try {
-            await Api.put(`/update/${state.editingTask}`, formData);
+            await Api.put(`/update/${state.editingTask}`, formData, {
+                headers : {
+                    Authorization: `Bearer ${token}`
+                }
+            }) 
             dispatch({ type: "FETCH SUCCESS" })
             setRefresh(!refresh) // notify dom 
             clearForm(); // clear form from the updated values
@@ -118,8 +124,16 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
     };
 
     const fetchPendingTasks = async () => {
+        const token = localStorage.getItem('my-todo-token')
+        console.log(token);
+
+
         try {
-            const res = await Api.get("/pending");
+            const res = await Api.get("/pending", {
+                headers : {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             dispatch({
                 type: "FETCH PENDING",
                 payload: res.data
@@ -130,6 +144,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
             dispatch({
                 type: "FETCH P-FAILED",
             })
+            navigation('/login')
         }
 
     }
@@ -137,9 +152,15 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
     useEffect(() => { fetchPendingTasks() }, [refresh])
     useEffect(() => {
         const fetchCompletedTask = async () => {
+        const token = localStorage.getItem('my-todo-token')
+
 
             try {
-                const res = await Api.get("/completed");
+                const res = await Api.get("/completed", {
+                headers : {
+                    Authorization: `Bearer ${token}`
+                }
+            });
                 dispatch({
                     type: "FETCH COMPLETED",
                     payload: res.data
@@ -157,10 +178,17 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
 
     const markDone = async (_id) => {
+        const token = localStorage.getItem('my-todo-token')
+
         const id = _id;
         try {
             const res = await Api.put(`/update/${id}`, {
                 task_state: "completed"
+            },
+            {
+                headers : {
+                    Authorization: `Bearer ${token}`
+                }
             });
             setRefresh(!refresh)
 
@@ -171,6 +199,8 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
     }
 
     const deleteTask = async (_id) => {
+        const token = localStorage.getItem('my-todo-token')
+
         const id = _id;
         try {
             const res = await Api.delete(`/delete/${id}`);
