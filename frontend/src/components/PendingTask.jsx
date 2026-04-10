@@ -7,7 +7,7 @@ import edit_img from '../assets/edit.svg';
 import trash from '../assets/delete.svg'
 
 
-function PendingTask({ t, handleEdit, deleteTask }) {
+function PendingTask({ t, handleEdit, deleteTask, markDone }) {
     return (
         <div>
             <div className='flex gap-4'>

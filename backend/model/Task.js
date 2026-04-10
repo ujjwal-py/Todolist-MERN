@@ -24,6 +24,10 @@ const taskSchema = new mongoose.Schema({
     deadline_time: {
         type: String, 
         required: true
+    },
+    user : {
+        type : String,
+        required: true
     }
 }, {timestamps : true})
 

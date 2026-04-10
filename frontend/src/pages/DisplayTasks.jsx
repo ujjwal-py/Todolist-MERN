@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { act, useEffect, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/form';
 import Api from '../services/Api';
@@ -9,6 +9,7 @@ import Navbar from '../components/Navbar';
 
 function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
     const [loading, setLoading] = useState();
+    const [username, setUsername] = useState('');
     function reducer(state, action) {  // will handle all the display functions 
         switch (action.type) {
             case "FETCH PENDING":
@@ -54,7 +55,8 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
                     editingTask: action.payload._id,
                     isOpen: true
                 };
-
+            default:
+                return state;
         }
     }
 
@@ -151,6 +153,20 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
     }
 
     useEffect(() => { fetchPendingTasks() }, [refresh])
+    
+    useEffect(() => {
+        const fetchUsername = async() => {
+            try {
+                const response = await Api.get('/get-username');
+                setUsername(response.data.username);
+            }
+            catch(err) {
+                console.log(err);
+            }
+        }
+        fetchUsername();
+    }, [])
+
     useEffect(() => {
         const fetchCompletedTask = async () => {
         const token = localStorage.getItem('my-todo-token')
@@ -221,6 +237,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
             {/* tasks display */}
             < div className='flex flex-col w-screen items-center h-[80vh]' >
+                <h1>Hello {username} </h1>
                 <div className='flex justify-between mt-4 w-full'>
                     <div className='w-1/2 rounded-2xl m-4'>
                         <h2 className='text-white text-center text-2xl   mb-4'>Pending Tasks</h2>
@@ -228,7 +245,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
                             {state.pendingTasks.map((t) => (
                                 <li key={t._id} className='pending-task'>
-                                    <PendingTask t = {t} handleEdit={handleEdit} deleteTask={deleteTask} />
+                                    <PendingTask t = {t} handleEdit={handleEdit} deleteTask={deleteTask} markDone = {markDone}/>
 
                                 </li>
                             ))}

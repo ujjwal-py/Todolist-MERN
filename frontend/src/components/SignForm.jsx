@@ -13,6 +13,11 @@ function SignForm({ handleSubmit, formData, handleChange, formTitle, error }) {
                             <label className='mb-2'>Username</label>
                             <input type='text' name='username' value={formData.username} onChange={handleChange} placeholder='Enter your username' className='p-3 bg-cyan-900 text-white text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400' />
                         </div>
+                        {formTitle == "Sign Up" && 
+                        <div className='flex flex-col'>
+                            <label className='mb-2'>Email</label>
+                            <input type='text' name='email' value={formData.email} onChange={handleChange} placeholder='Enter your email' className='p-3 bg-cyan-900 text-white text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400' />
+                        </div>}
                         <div className='flex flex-col'>
                             <label className='mb-2'>Password</label>
                             <input type='password' name='password' value={formData.password} onChange={handleChange} placeholder='Enter your password (min 8 characters)' className='p-3 bg-cyan-900 text-white text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400' />

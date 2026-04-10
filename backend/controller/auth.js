@@ -1,9 +1,34 @@
 import User from '../model/User.js';
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt';
+import zod from 'zod';
 
 // user already exists? 
 // match jwt token
+
+const userSchema = zod.object({
+    username: zod.string(),
+    email: zod.string().email(),
+    password: zod.string().trim().min(8)
+})
+
+
+
+export const check_user = (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(400).json({msg : "token not there"});
+    }
+    try {
+        const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
+        const verify = jwt.verify(token, process.env.JWT_SECRET);
+        res.status(201).json({msg: "yes"})
+    }
+    catch (err) {
+        res.status(400).json({msg: err.message})
+    }
+
+}
 
 export const signInMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -59,7 +84,7 @@ export const signIn = async(req, res) =>  {
 }
 
 export const signUpController = async(req, res) => {
-    const username = req.body.username;
+    const {username, email, password} = req.body;
     
     try {
         const isExist = await User.findOne({username: username})
@@ -68,13 +93,20 @@ export const signUpController = async(req, res) => {
                 msg: "User already exists"
             });
         }
-        const password = req.body.password;
-        const hashedPass = await bcrypt.hash(password, 10);
-        const newUser = await User.create({
-            username,
-            password: hashedPass
-        })
-        const token = jwt.sign({username: newUser.username}, process.env.JWT_SECRET);
+        const result = userSchema.safeParse(req.body);
+        if (!result.success) {
+            return res.status(400).json({
+                msg: `${result.error.issues[0].path[0]} ${result.error.issues[0].message}`
+            });
+        }
+        const data = result.data;
+        const hashedPass = await bcrypt.hash(data.password, 10);
+        data.password = hashedPass;
+        
+        const user = new User(data);
+        await user.save();
+
+        const token = jwt.sign({username: user.username}, process.env.JWT_SECRET);
         res.status(200).json({
             token
         });

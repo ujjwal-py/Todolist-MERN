@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Api from '../services/Api';
 import SignForm from '../components/SignForm';
@@ -8,6 +8,21 @@ import Navbar from '../components/Navbar';
 
 function Signin() {
   const navigaton = useNavigate();
+
+  const checkUser = async() => {
+    try {
+      const token = localStorage.getItem("my-todo-token");
+      const res = await Api.get("/check-user", {
+        token : token
+      })
+      if (res.status == "201") navigaton('/display')
+    }
+    catch(err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {checkUser()}, [])
 
   const [formData, setFormData] = useState({
     username : "",
