@@ -1,6 +1,21 @@
 import Task from "../model/Task.js";
 import jwt from 'jsonwebtoken'
-// import {nanoid} from 'nanoid';
+import zod from 'zod';
+
+const today = new Date();
+today.setHours(0, 0, 0, 0)
+const taskSchema = zod.object({
+    task_state : zod.enum(["pending", "completed"]), 
+    title : zod.string().trim().max(20),
+    description: zod.string().trim().max(50),
+    priority: zod.enum(["high", "mid", "low"]),
+    deadline_date: zod.coerce.date().min(today, "dates can't be in past"), // make it validate only dates today and future 
+    deadline_time: zod.string().length(5),
+    user: zod.string().trim()
+})
+
+
+
 export const getUsername = (req, res) => {
     let token = req.headers.authorization;
     token = token.startsWith('Bearer ') ? token.slice(7) : token;
@@ -19,20 +34,18 @@ export const getUsernameHandler = (req, res) => {
     }
 }
 
-
 export const createTask = async (req, res) => {
     try {
-        const {title, description, priority, deadline_date, deadline_time} = req.body;
-        const user = getUsername(req, res);
-        // const id = nanoid(6);
-        const newTask = await Task.create({
-            title,
-            description,
-            priority,
-            deadline_date,
-            deadline_time, 
-            user
-        })
+        // validation fist
+        const validate = taskSchema.safeParse(req.body);
+        if (!validate.success) {
+            return res.status(401).json({
+                msg : validate.data.issues
+            });
+        }
+        const data = validate.data;
+        data.deadline_date = req.body.deadline_date;
+        const newTask = await Task.create(data)
         res.status(201).json({id: `${newTask._id}`})
     }
     catch (err) {
@@ -72,7 +85,7 @@ export const deleteTask = async (req, res) => {
         if (!id) {
             return res.status(400).json({message: "ID is required"});
         }
-        await Task.findByIdAndDelete();
+        await Task.findByIdAndDelete(id);
         res.status(204).send();
     }
     catch (err) {

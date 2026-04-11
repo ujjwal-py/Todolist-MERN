@@ -11,9 +11,10 @@ function Signin() {
 
   const checkUser = async() => {
     try {
-      const token = localStorage.getItem("my-todo-token");
       const res = await Api.get("/check-user", {
-        token : token
+        headers : {
+          Authorization: `Bearer ${localStorage.getItem("my-todo-token")}`
+        }
       })
       if (res.status == "201") navigaton('/display')
     }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Api from '../services/Api';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/form';
@@ -45,6 +45,24 @@ function NewformData({formData, setFormData ,refresh, setRefresh}) {
             navigation('/login')
         }
     }
+
+    useEffect(() => {
+    const fetchUsername = async() => {
+        try {
+            const response = await Api.get('/get-username');
+            setFormData((prev) => ({
+              ...prev,
+              user : response.data.username
+            }));
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    fetchUsername();
+}, [refresh])
+
+
     return (
         <>
         <Navbar/>
