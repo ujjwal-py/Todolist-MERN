@@ -9,19 +9,24 @@ import trash from '../assets/delete.svg'
 
 function PendingTask({ t, handleEdit, deleteTask, markDone }) {
     return (
-        <div>
-            <div className='flex gap-4'>
-                <h3 title={t.description}>{t.title}</h3>
+        <div >
+            <div className='flex gap-4 '>
+                <h3 >{t.title}</h3>
                 <img src={t.priority === "high" ? high : t.priority === "medium" ? medium : low} className='icon-img' />
 
             </div>
 
-            <div className='flex gap-4'>
-                <div className='flex'>
+            <div>
+                <p className='font-normal text-sm'>{t.description}</p>
+            </div>
+
+            <div className='flex flex-col md:flex-row md:gap-4 mt-2'>
+                <div className='flex flex-row'>
                     <img src={clock} className='icon-img' />
-                    <p className='font-normal'>Deadline: {t.deadline_date} {t.deadline_time}</p>
+                    <p className='font-normal '>Deadline: {t.deadline_date} {t.deadline_time}</p>
                 </div>
-                <img src={check} className='icon-img '
+                <div className='flex gap-4 mt-2 md:mt-0'>
+                    <img src={check} className='icon-img '
                     onClick={() => {
                         markDone(t._id);
                     }} />
@@ -36,6 +41,8 @@ function PendingTask({ t, handleEdit, deleteTask, markDone }) {
                         deleteTask(t._id)
                     }}
                 />
+                </div>
+                
             </div>
         </div>
     )

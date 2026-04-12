@@ -17,7 +17,7 @@
   }
 
   input[type="text"] {
-    @apply p-3 bg-cyan-900 text-white text-lg mt-2
+    @apply p-3 bg-[#76ABDF] text-white text-lg mt-2
   }
 
   label, p {
@@ -25,7 +25,7 @@
   }
 
   button {
-    @apply px-4 py-1 bg-blue-700 text-lg text-white cursor-pointer hover:bg-blue-800 rounded-lg active:scale-95 
+    @apply px-4 py-1 bg-[#F2003C] text-lg text-white cursor-pointer hover:bg-red-400 rounded-lg active:scale-95 
   }
 
   input[type="radio"] {
@@ -35,13 +35,13 @@
 
 @layer components {
   .icon-img {
-    @apply w-6 ml-3 cursor-pointer
+    @apply w-6  cursor-pointer
   }
   .pending-task {
-    @apply flex flex-col justify-center rounded-2xl shadow-lg shadow-blue-500 p-2 bg-blue-900 mb-5 w-full
+    @apply flex flex-col border-2 border-yellow-400 justify-center rounded-2xl shadow-lg shadow-yellow-400 p-2 bg-[#C49102] mb-5 w-full
   }
   .completed-task {
-    @apply text-white text-lg font-bold rounded-2xl shadow-lg shadow-green-400 flex justify-between p-6 mb-5 bg-green-900 w-full
+    @apply text-white text-lg font-bold rounded-2xl shadow-lg shadow-green-400 flex justify-between p-6 mb-5 bg-[#3CB371] w-full
   }
   .backdrop-style {
     @apply fixed inset-0 bg-black/50 flex items-center justify-center

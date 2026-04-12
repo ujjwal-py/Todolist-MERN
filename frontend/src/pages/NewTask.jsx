@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Form from '../components/form';
 import Navbar from '../components/Navbar';
 
-function NewformData({formData, setFormData ,refresh, setRefresh}) {
+function NewTask({formData, setFormData ,refresh, setRefresh}) {
 
     const navigation  = useNavigate();
 
@@ -33,7 +33,7 @@ function NewformData({formData, setFormData ,refresh, setRefresh}) {
                 title: "",
                 description: "",
                 priority: "high",
-                formData_state: "pending",
+                task_state: "pending",
                 deadline_date: "",
                 deadline_time: ""
             }))
@@ -41,7 +41,7 @@ function NewformData({formData, setFormData ,refresh, setRefresh}) {
         }
         catch (err) {
             // alert("Something went wrong");
-            console.error(err);
+            // console.error(res.data);
             navigation('/login')
         }
     }
@@ -69,7 +69,7 @@ function NewformData({formData, setFormData ,refresh, setRefresh}) {
 
             {/* New formData */}
             <div className='flex flex-col h-[80vh] gap-y-10 justify-center items-center m-0'>
-                <h2 className='text-center mb-8 text-white text-6xl'>Create New Task</h2>
+                <h2 className='text-center text-white text-3xl'>Create New Task</h2>
                 <Form isReq = {true} formData = {formData} handleChange = {handleChange} handleSubmit = {handleSubmit} />
 
                 <button className='mt-8 active:scale-95 bg-red-400'
@@ -84,4 +84,4 @@ function NewformData({formData, setFormData ,refresh, setRefresh}) {
     )
 }
 
-export default NewformData
+export default NewTask

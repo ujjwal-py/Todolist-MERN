@@ -58,7 +58,6 @@ function Signin() {
   }
   return (
     <>
-    <Navbar />
 
     <SignForm handleChange={handleChange} formData={formData} handleSubmit={handleSubmit} formTitle={"Sign In"} error = {error}/>
     </>

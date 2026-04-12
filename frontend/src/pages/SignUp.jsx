@@ -17,7 +17,7 @@ function SignUp() {
       if (res.status == "201") navigaton('/display')
     }
     catch(err) {
-      console.log(err);
+      // console.log(err);
     }
   }
 

@@ -39,8 +39,9 @@ export const createTask = async (req, res) => {
         // validation fist
         const validate = taskSchema.safeParse(req.body);
         if (!validate.success) {
-            return res.status(401).json({
-                msg : validate.data.issues
+                console.log(validate.error.issues)
+            return res.status(400).json({
+                msg : validate.error.issues
             });
         }
         const data = validate.data;
@@ -50,7 +51,7 @@ export const createTask = async (req, res) => {
     }
     catch (err) {
         console.error(err);
-        res.status(500).json({message: err.message});
+        res.status(500).json({message: err});
     }
 }
 

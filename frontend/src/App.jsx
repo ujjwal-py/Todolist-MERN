@@ -14,6 +14,7 @@ import FourOFour from './pages/FourOFour';
 function App() {
   const [refresh, setRefresh] = useState(false)
   const [formData, setFormData] = useState({
+        task_state: "pending",
         title: "",
         description: "",
         priority: "high",

@@ -238,8 +238,17 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
             {/* tasks display */}
             < div className='flex flex-col w-screen items-center h-[80vh]' >
                 <h2 className='mt-4 rounded-2xl p-3 text-3xl shadow-blue-300 shadow-xl'>Hello {formData.user} </h2>
-                <div className='flex justify-between mt-4 w-full'>
-                    <div className='w-1/2 rounded-2xl m-4'>
+                <div className="
+                    flex flex-col md:flex-row 
+                    gap-3 
+                    md:gap-0 
+                    justify-between items-center 
+                    w-full max-w-6xl mx-auto 
+                    px-4 py-3 
+                    bg-[#2E2787] 
+                    rounded-2xl
+                    ">
+                    <div className='w-full rounded-2xl m-4  md:w-1/2'>
                         <h2 className='text-white text-center text-2xl   mb-4'>Pending Tasks</h2>
                         {!loading ? <ul>
 
@@ -267,7 +276,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
                         )}
                     </div>
 
-                    <div className='w-1/2  rounded-2xl m-4'>
+                    <div className='w-full rounded-2xl m-4 md:w-1/2'>
                         <h2 className='text-white text-center text-2xl  mb-4'>Completed Tasks</h2>
                         {
                         !loading ? 
