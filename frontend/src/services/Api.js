@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+
+
 const Api = axios.create({
-    baseURL: process.env.BASE_URL
+    baseURL: "https://todolist-mern-production-490f.up.railway.app"
 })
 
 Api.interceptors.request.use((config) => {
