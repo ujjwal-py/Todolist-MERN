@@ -18,7 +18,6 @@ function App() {
         title: "",
         description: "",
         priority: "high",
-        task_state: "pending",
         deadline_date: "",
         deadline_time: "", 
         user: ""
