@@ -1,6 +1,6 @@
 import { act, useEffect, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Form from '../components/form';
+import Form from '../components/Form';
 import Api from '../services/Api';
 import trash from '../assets/delete.svg';
 import PendingTask from '../components/PendingTask';
@@ -261,15 +261,17 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
                         </ul> : <div className='text-white text-center font-mono text-2xl'>Fetching data please wait.....</div>}
                         {state.isOpen && (
                             <div className='backdrop-style'>
-                                <div className='bg-gray-800 p-5 rounded-2xl relative'>
-                                    <button className='bg-red-500  absolute right-0 top-0' onClick={() => {
+                                <div className='bg-gray-800 p-4 md:p-5 rounded-2xl relative w-11/12 md:w-auto mx-4 md:mx-0'>
+                                    <button className='bg-red-500 absolute right-2 top-2 md:right-0 md:top-0 px-3 py-1 md:px-4 md:py-2 text-sm md:text-base rounded' onClick={() => {
                                         // setIsOpen(false);
                                         dispatch({ type: "CLOSE" })
                                         clearForm()
                                     }}>Close</button>
-                                    <Form formData={formData}
-                                        handleChange={handleChange}
-                                        handleSubmit={handleFormSubmit} />
+                                    <div className='mt-10 md:mt-0'>
+                                        <Form formData={formData}
+                                            handleChange={handleChange}
+                                            handleSubmit={handleFormSubmit} />
+                                    </div>
 
                                 </div>
                             </div>

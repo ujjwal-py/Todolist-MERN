@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import Api from '../services/Api';
 import { useNavigate } from 'react-router-dom';
-import Form from '../components/form';
+import Form from '../components/Form';
 import Navbar from '../components/Navbar';
 
 function NewTask({formData, setFormData ,refresh, setRefresh}) {
