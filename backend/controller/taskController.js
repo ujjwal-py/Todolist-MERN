@@ -6,8 +6,8 @@ const today = new Date();
 today.setHours(0, 0, 0, 0)
 const taskSchema = zod.object({
     task_state : zod.enum(["pending", "completed"]), 
-    title : zod.string().trim().max(20),
-    description: zod.string().trim().max(50),
+    title : zod.string().trim().max(50),
+    description: zod.string().trim().max(100),
     priority: zod.enum(["high", "mid", "low"]),
     deadline_date: zod.coerce.date().min(today, "dates can't be in past"), // make it validate only dates today and future 
     deadline_time: zod.string().length(5),

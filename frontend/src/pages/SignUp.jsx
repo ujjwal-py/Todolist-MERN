@@ -20,7 +20,6 @@ function SignUp() {
       // console.log(err);
     }
   }
-
   useEffect(() => {checkUser()}, [])
 
   const [formData, setFormData] = useState({

@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt';
 import zod from 'zod';
 
-// user already exists? 
-// match jwt token
 
 const userSchema = zod.object({
     username: zod.string(),
@@ -12,17 +10,21 @@ const userSchema = zod.object({
     password: zod.string().trim().min(8)
 })
 
+const verfiyToken =  (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        throw new Error ("no token provided");
+    }
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
+    const verify = jwt.verify(token, process.env.JWT_SECRET);
+}
+
 
 
 export const check_user = (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(400).json({msg : "token not there"});
-    }
     try {
-        const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
-        const verify = jwt.verify(token, process.env.JWT_SECRET);
-        res.status(201).json({msg: "yes"})
+        verfiyToken(req, res)
+        return res.status(201).json({msg: "user valid"})
     }
     catch (err) {
         res.status(400).json({msg: err.message})
@@ -30,24 +32,20 @@ export const check_user = (req, res) => {
 
 }
 
-export const signInMiddleware = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-        return res.status(400).json({msg: "Already signed in"})
+export const preventRelogin = (req, res, next) => {
+    try {
+        verfiyToken(req, res);
+        return res.status(201).json({msg: "user already signed in"});
     }
-    next();
+    catch {
+        // means no valid token, allow them to sign in
+        next();
+    }
 }
 
 export const authMiddlware = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).json({
-            msg: "No token provided"
-        })
-    }
     try {
-        const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
-        const response = jwt.verify(token, process.env.JWT_SECRET);
+        verfiyToken(req, res);
         next();
     }
     catch (err) {
@@ -84,7 +82,7 @@ export const signIn = async(req, res) =>  {
 }
 
 export const signUpController = async(req, res) => {
-    const {username, email, password} = req.body;
+    const {username} = req.body;
     
     try {
         const isExist = await User.findOne({username: username})

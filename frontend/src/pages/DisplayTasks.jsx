@@ -112,11 +112,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
         // console.log(token);
         e.preventDefault();
         try {
-            await Api.put(`/update/${state.editingTask}`, formData, {
-                headers : {
-                    Authorization: `Bearer ${token}`
-                }
-            }) 
+            await Api.put(`/update/${state.editingTask}`, formData) 
             dispatch({ type: "FETCH SUCCESS" })
             setRefresh(!refresh) // notify dom 
             clearForm(); // clear form from the updated values
@@ -237,7 +233,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
             {/* tasks display */}
             < div className='flex flex-col w-screen items-center h-[80vh]' >
-                <h2 className='mt-4 rounded-2xl p-3 text-3xl shadow-blue-300 shadow-xl'>Hello {formData.user} </h2>
+                <h2 className='mt-4 mb-4 rounded-2xl p-3 text-3xl shadow-blue-300 shadow-xl'>Hello {formData.user} </h2>
                 <div className="
                     flex flex-col md:flex-row 
                     gap-3 

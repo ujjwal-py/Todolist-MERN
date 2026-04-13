@@ -22,11 +22,7 @@ function NewTask({formData, setFormData ,refresh, setRefresh}) {
         e.preventDefault();
         const token = localStorage.getItem('my-todo-token');
         try {
-            const res = await Api.post('/create', formData, {
-                headers : {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            const res = await Api.post('/create', formData)
             console.log(res.data.id);
             setFormData((prev) => ({
                 ...prev,
@@ -37,11 +33,13 @@ function NewTask({formData, setFormData ,refresh, setRefresh}) {
                 deadline_date: "",
                 deadline_time: ""
             }))
+            console.log(formData.priority)
             setRefresh(!refresh); //toggle for useeffect
         }
         catch (err) {
             // alert("Something went wrong");
             // console.error(res.data);
+            console.error(err)
             navigation('/login')
         }
     }

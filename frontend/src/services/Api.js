@@ -1,10 +1,11 @@
 import axios from 'axios'
 
 
-
 const Api = axios.create({
-    baseURL: "https://todolist-mern-production-490f.up.railway.app"
+    baseURL: import.meta.env.VITE_BASE_URL
 })
+;
+
 
 Api.interceptors.request.use((config) => {
     const token = localStorage.getItem("my-todo-token");

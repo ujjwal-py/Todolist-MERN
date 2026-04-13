@@ -9,20 +9,16 @@ import Navbar from '../components/Navbar';
 function Signin() {
   const navigaton = useNavigate();
 
+// redirects to display if the user is already signed in, works on every page refresh
   const checkUser = async() => {
     try {
-      const res = await Api.get("/check-user", {
-        headers : {
-          Authorization: `Bearer ${localStorage.getItem("my-todo-token")}`
-        }
-      })
+      const res = await Api.get("/check-user")
       if (res.status == "201") navigaton('/display')
     }
     catch(err) {
       console.log(err);
     }
   }
-
   useEffect(() => {checkUser()}, [])
 
   const [formData, setFormData] = useState({
@@ -58,7 +54,6 @@ function Signin() {
   }
   return (
     <>
-
     <SignForm handleChange={handleChange} formData={formData} handleSubmit={handleSubmit} formTitle={"Sign In"} error = {error}/>
     </>
   )
