@@ -11,7 +11,7 @@ const taskSchema = zod.object({
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        return localDate >= today;
+        return date >= today;
     }, "dates can't be in past"),
     deadline_time: zod.string().length(5),
     user: zod.string().trim()

@@ -10,7 +10,7 @@ const userSchema = zod.object({
     password: zod.string().trim().min(8)
 })
 
-const verfiyToken =  (req, res) => {
+const verifyToken =  (req, res) => {
     const token = req.cookies.token;
     if (!token) {
         throw new Error ("no token provided");
@@ -25,7 +25,7 @@ const verfiyToken =  (req, res) => {
 
 export const check_user = (req, res) => {
     try {
-        verfiyToken(req, res)
+        verifyToken(req, res)
         return res.status(200).json({msg: "user valid"})
     }
     catch (err) {
@@ -36,7 +36,7 @@ export const check_user = (req, res) => {
 
 export const preventRelogin = (req, res, next) => {
     try {
-        verfiyToken(req, res);
+        verifyToken(req, res);
         return res.status(200).json({msg: "user already signed in"});
     }
     catch {
@@ -45,9 +45,9 @@ export const preventRelogin = (req, res, next) => {
     }
 }
 
-export const authMiddlware = (req, res, next) => {
+export const authMiddleware = (req, res, next) => {
     try {
-        verfiyToken(req, res);
+        verifyToken(req, res);
         next();
     }
     catch (err) {

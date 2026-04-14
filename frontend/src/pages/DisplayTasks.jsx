@@ -1,4 +1,4 @@
-import { act, useEffect, useReducer, useState } from 'react';
+import {  useEffect, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/Form';
 import Api from '../services/Api';
@@ -108,8 +108,6 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
     //update a task from the pending tasks
     const handleFormSubmit = async (e) => {
-        const token = localStorage.getItem('my-todo-token')
-        // console.log(token);
         e.preventDefault();
         try {
             await Api.put(`/update/${state.editingTask}`, formData) 
@@ -122,14 +120,9 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
     };
 
     const fetchPendingTasks = async () => {
-        const token = localStorage.getItem('my-todo-token')
         try {
             setLoading(true);
-            const res = await Api.get("/pending", {
-                headers : {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const res = await Api.get("/pending");
             dispatch({
                 type: "FETCH PENDING",
                 payload: res.data
@@ -167,9 +160,6 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
     useEffect(() => {
         const fetchCompletedTask = async () => {
-        const token = localStorage.getItem('my-todo-token')
-
-
             try {
                 setLoading(true)
                 const res = await Api.get("/completed");
@@ -199,11 +189,6 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
         try {
             const res = await Api.put(`/update/${id}`, {
                 task_state: "completed"
-            },
-            {
-                headers : {
-                    Authorization: `Bearer ${token}`
-                }
             });
             setRefresh(!refresh)
 

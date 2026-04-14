@@ -40,8 +40,6 @@ function Signin({error, setError}) {
     e.preventDefault();
     try {
       const response = await Api.post('/login', formData)
-      const token =  response.data.token;
-      localStorage.setItem("my-todo-token", token);
       navigaton('/display')
       setError("");
 

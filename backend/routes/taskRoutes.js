@@ -1,6 +1,6 @@
 import {createTask, displayPending, displayCompleted, deleteTask, updateTask, getUsername, getUsernameHandler} from '../controller/taskController.js'
 import express from 'express'
-import { signUpController, authMiddlware, signIn, preventRelogin, check_user, logOut } from "../controller/auth.js"
+import { signUpController, authMiddleware, signIn, preventRelogin, check_user, logOut } from "../controller/auth.js"
 
 const router = express.Router();
 
@@ -12,14 +12,14 @@ router.get('/get-username', authMiddlware, getUsernameHandler);
 router.post('/logout', logOut);
 
 
-router.get('/', authMiddlware ,(req, res) => {
+router.get('/', authMiddleware ,(req, res) => {
     res.send("Todo api")
 })
-router.post('/create', authMiddlware, createTask);
-router.get('/pending', authMiddlware,  displayPending);
-router.get('/completed', authMiddlware, displayCompleted);
+router.post('/create', authMiddleware, createTask);
+router.get('/pending', authMiddleware,  displayPending);
+router.get('/completed', authMiddleware, displayCompleted);
 router.delete('/delete/:id', deleteTask);
-router.put('/update/:id', authMiddlware, updateTask);
+router.put('/update/:id', authMiddleware, updateTask);
 
 
 export default router;
