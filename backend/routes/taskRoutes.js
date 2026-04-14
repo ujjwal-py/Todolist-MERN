@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/register', preventRelogin, signUpController);
 router.post('/login', preventRelogin, signIn)
 router.get('/check-user', check_user)
-router.get('/get-username', authMiddlware, getUsernameHandler);
+router.get('/get-username', authMiddleware, getUsernameHandler);
 router.post('/logout', logOut);
 
 
