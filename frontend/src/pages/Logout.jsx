@@ -1,12 +1,17 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar';
+import Api from '../services/Api';
 
 function Logout() {
     const navigation = useNavigate();
-    const logOut = () => {
-        localStorage.removeItem("my-todo-token");
-        navigation("/")
+    const logOut = async (req, res) => {
+        try {
+            const response = Api.post('/logout');
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
   return (
     <div >

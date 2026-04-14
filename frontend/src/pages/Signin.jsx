@@ -6,7 +6,7 @@ import SignForm from '../components/SignForm';
 import Navbar from '../components/Navbar';
 
 
-function Signin() {
+function Signin({error, setError}) {
   const navigaton = useNavigate();
 
 // redirects to display if the user is already signed in, works on every page refresh
@@ -16,7 +16,7 @@ function Signin() {
       if (res.status == "201") navigaton('/display')
     }
     catch(err) {
-      console.log(err);
+      // console.log(err);
     }
   }
   useEffect(() => {checkUser()}, [])
@@ -26,7 +26,7 @@ function Signin() {
     password : ""
   })
 
-  const [error, setError] = useState("");
+
 
   const handleChange = (e) => {
     const {name, value}  = e.target;
@@ -48,7 +48,7 @@ function Signin() {
     }
     catch(err) {
       console.error(err);
-      setError(`ERROR ${err.status} -> ${err.response.data.msg}`)
+      setError(`ERROR ${err.status} -> ${err}`)
     } 
 
   }

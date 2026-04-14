@@ -1,6 +1,6 @@
 import {createTask, displayPending, displayCompleted, deleteTask, updateTask, getUsername, getUsernameHandler} from '../controller/taskController.js'
 import express from 'express'
-import { signUpController, authMiddlware, signIn, preventRelogin, check_user } from "../controller/auth.js"
+import { signUpController, authMiddlware, signIn, preventRelogin, check_user, logOut } from "../controller/auth.js"
 
 const router = express.Router();
 
@@ -9,6 +9,7 @@ router.post('/register', preventRelogin, signUpController);
 router.post('/login', preventRelogin, signIn)
 router.get('/check-user', check_user)
 router.get('/get-username', authMiddlware, getUsernameHandler);
+router.post('/logout', logOut);
 
 
 router.get('/', authMiddlware ,(req, res) => {

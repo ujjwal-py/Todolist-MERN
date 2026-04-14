@@ -11,20 +11,22 @@ const userSchema = zod.object({
 })
 
 const verfiyToken =  (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
+    const token = req.cookies.token;
+    if (!token) {
         throw new Error ("no token provided");
-    }
-    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
+    };
     const verify = jwt.verify(token, process.env.JWT_SECRET);
-}
+    req.user = verify;
+}  
+
+
 
 
 
 export const check_user = (req, res) => {
     try {
         verfiyToken(req, res)
-        return res.status(201).json({msg: "user valid"})
+        return res.status(200).json({msg: "user valid"})
     }
     catch (err) {
         res.status(400).json({msg: err.message})
@@ -35,7 +37,7 @@ export const check_user = (req, res) => {
 export const preventRelogin = (req, res, next) => {
     try {
         verfiyToken(req, res);
-        return res.status(201).json({msg: "user already signed in"});
+        return res.status(200).json({msg: "user already signed in"});
     }
     catch {
         // means no valid token, allow them to sign in
@@ -69,9 +71,15 @@ export const signIn = async(req, res) =>  {
         if (!isMatch) {
             return res.status(401).json({msg: "Invalid password"})
         }
-        const token = jwt.sign({username: user.username}, process.env.JWT_SECRET);
+        const token = jwt.sign({username: user.username}, process.env.JWT_SECRET, {expiresIn: "1d"});
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false, 
+            sameSite: "Lax",
+            maxAge: 24*60 * 60 * 1000
+        });
         res.status(200).json({
-            token
+            msg: "signed in successfully"
         });
     }
     catch (err) {
@@ -104,9 +112,18 @@ export const signUpController = async(req, res) => {
         const user = new User(data);
         await user.save();
 
-        const token = jwt.sign({username: user.username}, process.env.JWT_SECRET);
+        const token = jwt.sign({username: user.username, user_id: user._id}, process.env.JWT_SECRET, {expiresIn: "1d"});
+
+        // save token as cookie
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "Lax",
+            maxAge: 24 * 60* 60 * 1000
+        });
+
         res.status(200).json({
-            token
+            msg: "Signed up"
         });
 
     }
@@ -115,6 +132,15 @@ export const signUpController = async(req, res) => {
             msg : `${err.message}`
         })
     }
+}
 
+export const logOut = async (req, res) => {
+    try {
+        res.clearCookie("token");
+        res.status(200).json({msg: "successfully logged out"})
+    }
+    catch (err) {
+        res.status(500).json({msg: err})
+    }
 }
 

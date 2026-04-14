@@ -172,11 +172,7 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
 
             try {
                 setLoading(true)
-                const res = await Api.get("/completed", {
-                headers : {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+                const res = await Api.get("/completed");
                 dispatch({
                     type: "FETCH COMPLETED",
                     payload: res.data

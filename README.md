@@ -1,12 +1,16 @@
 # Fullstack Todolist
-Made this as a capstone project to see how apps are build using MERN, how database and frontend are operated together. 
+Implemented a todo list app using MERN stack. Here I implemented Auth using jwt and cookies. Used Zod for data validation. Used monogDB as database to store the user and tasks. State management using useState and useReducer along with error states and refresh states. Also implemented middlwares in express. Added dynamic routing that navigates users on page refreshes on the basis of their token.
+
+
+
 
 ## Tech Stack
-**Frontend**  -> React + Tailwindcss 
+### Libraries
+**Frontend** - Axios, Tailwindcss, dotenv, react-router-dom
 
-**Backend** -> Node + Express
-
-**Database** -> MongoDB
+**Backend** - Zod, cookie-parser, dotenv, bycrypt, jsonwebtoken
+### Framework
+**Backend** - Express
 
 ## Run this in your system
 ### Prerequisites
@@ -31,18 +35,16 @@ npm start
 ```
 
 Set up your .env from .env.example 
-```
-MONGO_URI= # your monogo db connection url here
-PORT= # port number where you want to run the backend
-```
+
 ## Todo
 - [x] Add a navbar and enable routing
 - [x] Detailed Task viewing and updating 
-- [ ] Better UI and mobile responsive
+- [x] Better UI and mobile responsive
 - [x] States are getting too complex, need useReducer
 - [x] Added Auth logic in the backend
 - [x] Connect auth with frontend as well
-- [ ] Add validation for task update
+- [x] Add validation for task update
+- [ ] Implement the stats logic
 
 
 

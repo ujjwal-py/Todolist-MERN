@@ -5,7 +5,7 @@ import Api from '../services/Api';
 import SignForm from '../components/SignForm';
 
 
-function SignUp() {
+function SignUp({error, setError}) {
   const navigaton = useNavigate();
 
   const checkUser = async() => {
@@ -28,7 +28,7 @@ function SignUp() {
     password : ""
   })
 
-  const [error, setError] = useState(``);
+
 
   const handleChange = (e) => {
     const {name, value}  = e.target;

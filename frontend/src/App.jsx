@@ -23,14 +23,16 @@ function App() {
         user: ""
   })
 
+  const [error, setError] = useState("")
+
   
 
   return (
     <>
       <Routes>
         <Route path='/' element = {<Landing/>} />
-        <Route path='/login' element = {<Signin/>} />
-        <Route path='/register' element = {<SignUp/>} />
+        <Route path='/login' element = {<Signin error = {error} setError = {setError} />} />
+        <Route path='/register' element = {<SignUp error = {error} setError = {setError} />} />
         <Route path='/logout' element={<Logout/>} />
         <Route path='/display' element = {<DisplayTasks
          refresh={refresh}
@@ -42,6 +44,8 @@ function App() {
          setRefresh={setRefresh}
          formData = {formData}
          setFormData = {setFormData}
+         error = {error}
+         setError = {setError}
          />} />
         <Route path='/stats' element={<Stats/>}/>
         <Route path='*' element = {<FourOFour/>} />

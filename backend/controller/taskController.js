@@ -2,26 +2,25 @@ import Task from "../model/Task.js";
 import jwt from 'jsonwebtoken'
 import zod from 'zod';
 
-const today = new Date();
-today.setHours(0, 0, 0, 0)
 const taskSchema = zod.object({
-    task_state : zod.enum(["pending", "completed"]), 
-    title : zod.string().trim().max(50),
+    task_state: zod.enum(["pending", "completed"]),
+    title: zod.string().trim().max(50),
     description: zod.string().trim().max(100),
     priority: zod.enum(["high", "mid", "low"]),
-    deadline_date: zod.coerce.date().min(today, "dates can't be in past"), // make it validate only dates today and future 
+    deadline_date: zod.coerce.date().refine((date) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        return localDate >= today;
+    }, "dates can't be in past"),
     deadline_time: zod.string().length(5),
     user: zod.string().trim()
-})
+});
 
 
 
 export const getUsername = (req, res) => {
-    let token = req.headers.authorization;
-    token = token.startsWith('Bearer ') ? token.slice(7) : token;
-    const decode = jwt.decode(token);
-    const username = decode.username;
-    return username;
+    return req.user.username;
 }
 
 export const getUsernameHandler = (req, res) => {

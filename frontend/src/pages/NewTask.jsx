@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Form from '../components/Form';
 import Navbar from '../components/Navbar';
 
-function NewTask({formData, setFormData ,refresh, setRefresh}) {
+function NewTask({formData, setFormData ,refresh, setRefresh, error, setError}) {
 
     const navigation  = useNavigate();
 
@@ -39,8 +39,9 @@ function NewTask({formData, setFormData ,refresh, setRefresh}) {
         catch (err) {
             // alert("Something went wrong");
             // console.error(res.data);
+            setError(`${err.message}`)
             console.error(err)
-            navigation('/login')
+            // navigation('/login')
         }
     }
 
@@ -70,6 +71,7 @@ function NewTask({formData, setFormData ,refresh, setRefresh}) {
                 <h2 className='text-center text-white text-3xl'>Create New Task</h2>
                 <Form isReq = {true} formData = {formData} handleChange = {handleChange} handleSubmit = {handleSubmit} />
 
+                <div className='text-center text-lg bg-white text-red-500'>{error}</div>
                 <button className='mt-8 active:scale-95 bg-red-400'
                     onClick={() => {
                         navigation('/display')
