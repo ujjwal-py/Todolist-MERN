@@ -118,7 +118,7 @@ export const signUpController = async(req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",  // Only true in production
-            sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
+            sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
             maxAge: 24 * 60* 60 * 1000
         });
 
