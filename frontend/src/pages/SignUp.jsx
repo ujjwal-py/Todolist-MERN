@@ -14,7 +14,7 @@ function SignUp({error, setError}) {
       const res = await Api.get("/check-user", {
         token : token
       })
-      if (res.status == "201") navigaton('/display')
+      if (res.status == "200") navigaton('/display')
     }
     catch(err) {
       // console.log(err);

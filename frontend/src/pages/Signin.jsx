@@ -13,7 +13,7 @@ function Signin({error, setError}) {
   const checkUser = async() => {
     try {
       const res = await Api.get("/check-user")
-      if (res.status == "201") navigaton('/display')
+      if (res.status == "200") navigaton('/display')
     }
     catch(err) {
       // console.log(err);
