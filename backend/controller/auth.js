@@ -74,8 +74,8 @@ export const signIn = async(req, res) =>  {
         const token = jwt.sign({username: user.username}, process.env.JWT_SECRET, {expiresIn: "1d"});
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",  // Only true in production
-            sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
+            secure: true,  
+            sameSite: "None",
             maxAge: 24*60 * 60 * 1000
         });
         res.status(200).json({
@@ -117,8 +117,8 @@ export const signUpController = async(req, res) => {
         // save token as cookie
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",  // Only true in production
-            sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
+            secure: true,  // Only true in production
+            sameSite: "None",
             maxAge: 24 * 60* 60 * 1000
         });
 
