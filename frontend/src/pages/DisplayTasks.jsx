@@ -70,14 +70,15 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
     const [state, dispatch] = useReducer(reducer, initialformData);
 
     const clearForm = () => {
-        setFormData({
+        setFormData((prev) => ({
+            ...prev,
             title: '',
             description: "",
             priority: "",
             deadline_date: "",
             deadline_time: "",
             task_formData: "pending"
-        })
+        }))
     }
     const navigation = useNavigate();
 
@@ -90,10 +91,10 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
         setFormData((prev) => ({
             ...prev,
             title: task.title,
-            description: task.description,
             priority: task.priority,
             deadline_date: task.deadline_date,
-            deadline_time: task.deadline_time
+            deadline_time: task.deadline_time,
+            user: task.user
         }));
 
     }
@@ -236,6 +237,8 @@ function DisplayTasks({ refresh, setRefresh, formData, setFormData }) {
                                 </li>
                             ))}
                         </ul> : <div className='text-white text-center font-mono text-2xl'>Fetching data please wait.....</div>}
+
+                        {/* update div  */}
                         {state.isOpen && (
                             <div className='backdrop-style'>
                                 <div className='bg-gray-800 p-4 md:p-5 rounded-2xl relative w-11/12 md:w-auto mx-4 md:mx-0'>
